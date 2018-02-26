@@ -1,5 +1,7 @@
 
 package controllers;
+
+
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
 import play.mvc.Http.*;
@@ -34,7 +36,7 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     private FormFactory formFactory;
-    private Enivornment e;
+    private Environment e;
     
         @Inject
         public HomeController(FormFactory f, Environment env) {
@@ -169,24 +171,24 @@ public class HomeController extends Controller {
         MultipartFormData data = request().body().asMultipartFormData();
         FilePart<File> image = data.getFile("upload");
         String saveImageMsg = saveFile(newProduct.getId(),image);
-        flash("success","Product"+newProduct.getName()+"has been created/updated"+saveImageMsg());
+        flash("success","Product"+newProduct.getName()+"has been created/updated"+saveImageMsg);
         return redirect(controllers.routes.HomeController.index(0));
     }
 
     public String saveFile(Long id,FilePart<File>uploaded){
-        String mineType = uploaded.getContentType();
+        String mimeType = uploaded.getContentType();
         if(uploaded !=null){
-       if(mimeType.startswith("image/")){
-           String fileName = uploaded.getFileName();
+       if(mimeType.startsWith("image/")){
+           String fileName = uploaded.getFilename();
           
            File file = uploaded.getFile();
-           ImOperation op = new ImOperation();
+           IMOperation op = new IMOperation();
            op.addImage("public/images/productImages/"+id+".jpg");
            IMOperation thumb = new IMOperation ();
            thumb.addImage(file.getAbsolutePath());
            thumb.resize(60);
            thumb.addImage("public/images/productImages/thumbnails/"+id+".jpg");
-           File dir = new File("public/images/productImages/thumbnails");
+           File dir = new File("public/images/productImages/thumbnails/");
            if(!dir.exists()){
                dir.mkdirs();
            }
@@ -197,10 +199,12 @@ public class HomeController extends Controller {
            }catch(Exception e){
                e.printStackTrace();
            }
+        
         }
-               return "/ no file" ;
+         
        
     }
+    return "/ no file" ;
 }
 
 }

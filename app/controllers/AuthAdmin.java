@@ -1,5 +1,7 @@
 package controllers;
 
+import org.im4java.core.ConvertCmd;
+import org.im4java.core.IMOperation;
 import play.mvc.*;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CompletableFuture;

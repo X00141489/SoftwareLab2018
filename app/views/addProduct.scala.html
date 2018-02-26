@@ -8,7 +8,7 @@
 
 @main("Add Product",user) {
     <p class="lead">Add a new product</p>
-    @form(action = routes.addProductSubmit(), 'class ->"form-horiontal",'role->"form",'enctype -> "mutlipart/form-data")){
+    @form(action = routes.HomeController.addProductSubmit(), 'class -> "form-horiontal",'role->"form",'enctype -> "mutlipart/form-data"){
         @* CSRF attack prevention *@
         @CSRF.formField
 
