@@ -1,4 +1,4 @@
-@(products: List[models.Product], categories: List[models.Category], user: models.users.User)
+@(products: List[models.Product], categories: List[models.Category], user: models.users.User,env: play.api.Environment)
 
 @main("Products",user) {
 
@@ -32,7 +32,7 @@
           <th>Description</th>
           <th>Stock</th>
           <th>Price</th>
-          <th colspan="2"></th>      
+             
         </tr>
       </thead>
 
@@ -40,9 +40,14 @@
         @* Loop for creating table rows from product data*@
         @for(p<-products) {
           <tr>
-            <td class="numeric">@p.getId</td>
+            if(env.resource("public/images/productImages/thumbnails"+p.getId+".jpg").isDefined){
+              <td><img src = "/assets/images/productImages/thumbnails/@(p.getId+".jpg")"/></td>
+            }else{
+              <td> <img src = "/assets/images/productImages/thumbnails/noImage.jpg"/></td>
+            }
+            
             <td>@p.getName</td>
-            <td>@p.getCategory.getName</td>        
+            <td>@p..getName</td>        
             <td>@p.getDescription</td>
             <td  class="numeric">@p.getStock</td>
             <td  class="numeric">€ @("%.2f".format(p.getPrice))</td>

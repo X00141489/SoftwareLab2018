@@ -1,12 +1,14 @@
-@form(action = routes.ProductCtrl.addProductSubmit(). 'class ->"form-horiontal",'role->"form",'enctype -> "mutlipart/form-data")){
-
-
 @(productForm: Form[models.Product], user: models.users.User)
 @import helper._
 
+
+
+
+
+
 @main("Add Product",user) {
     <p class="lead">Add a new product</p>
-    @form(action=routes.HomeController.addProductSubmit(), 'class -> "form-horizontal", 'role -> "form") {
+    @form(action = routes.addProductSubmit(), 'class ->"form-horiontal",'role->"form",'enctype -> "mutlipart/form-data")){
         @* CSRF attack prevention *@
         @CSRF.formField
 
@@ -35,4 +37,4 @@
         </div>
     }
 }
-}
+

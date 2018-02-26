@@ -1,7 +1,7 @@
 
 package controllers;
 import org.im4java.core.ConvertCmd;
-import org.im4java.core.Imoperation;
+import org.im4java.core.IMOperation;
 import play.mvc.Http.*;
 import play.mvc.Http.MultipartFormData.FilePart;
 import java.io.File;
@@ -34,9 +34,11 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     private FormFactory formFactory;
+    private Enivornment e;
     
         @Inject
-        public HomeController(FormFactory f) {
+        public HomeController(FormFactory f, Environment env) {
+            this.e = env;
             this.formFactory = f;
         }
     
@@ -49,7 +51,7 @@ public class HomeController extends Controller {
             else {
                 productList = Category.find.ref(cat).getProducts();
             }
-            return ok(index.render(productList, categoryList, User.getUserById(session().get("email"))));
+            return ok(index.render(productList, categoryList, User.getUserById(session().get("email")),e));
         }
 
     public Result customer() {
@@ -61,29 +63,6 @@ public class HomeController extends Controller {
     public Result addProduct() {
         Form<Product> productForm = formFactory.form(Product.class);
         return ok(addProduct.render(productForm, User.getUserById(session().get("email"))));
-    }
-    public Result addProductSubmit() {
-        Product newProduct;
-        Form<Product> newProductForm = formFactory.form(Product.class).bindFromRequest();
-
-        if (newProductForm.hasErrors()) {
-            return badRequest(addProduct.render(newProductForm, User.getUserById(session().get("email"))));
-        }
-        else {
-            newProduct = newProductForm.get();
-
-            if (newProduct.getId() == null) {
-                newProduct.save();    
-                flash("success", "Product " + newProduct.getName() + " was added");
-                
-            }
-            else if (newProduct.getId() != null) {
-                newProduct.update();
-                flash("success", "Product " + newProduct.getName() + " was updated");
-            }
-        }
-
-        return redirect(controllers.routes.HomeController.index(0));
     }
     @Security.Authenticated(Secured.class)
     @With(AuthAdmin.class)
@@ -222,6 +201,9 @@ public class HomeController extends Controller {
                return "/ no file" ;
        
     }
+}
+
+}
 
 
 
